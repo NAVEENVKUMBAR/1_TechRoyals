@@ -47,7 +47,7 @@
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/CustomCars3D.git
+git clone https://github.com/1_TechRoyals/CustomCars3D.git
 cd CustomCars3D
 
 # Install dependencies
@@ -294,15 +294,15 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 ## 📞 **Support**
 
-- **Issues**: [GitHub Issues](https://github.com/yourusername/CustomCars3D/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/yourusername/CustomCars3D/discussions)
+- **Issues**: [GitHub Issues](https://github.com/1_TechRoyals/CustomCars3D/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/1_TechRoyals/CustomCars3D/discussions)
 - **Email**: your.email@example.com
 
 ---
 
 ## 🌟 **Star History**
 
-[![Star History Chart](https://api.star-history.com/svg?repos=yourusername/CustomCars3D&type=Date)](https://star-history.com/#yourusername/CustomCars3D&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=1_TechRoyals/CustomCars3D&type=Date)](https://star-history.com/#1_TechRoyals/CustomCars3D&Date)
 
 ---
 
