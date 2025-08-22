@@ -306,7 +306,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 ---
 
-**Made with ❤️ by [Your Name]**
+**Made with ❤️ by Team Tech Royals**
 
 *Experience the future of car customization with CustomCars3D! 🚗✨*
 
