@@ -1,7 +1,5 @@
-import { useBox, useRaycastVehicle } from "@react-three/cannon";
-import { useFrame, useLoader } from "@react-three/fiber";
+import { useLoader } from "@react-three/fiber";
 import { useEffect, useRef } from "react";
-import { Quaternion, Vector3 } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 // import { useControls } from "./useControls";
 // import { useWheels } from "./useWheels";
@@ -75,11 +73,6 @@ export function Car() {
   }, [result]);
 
   return (
-    // <group ref={vehicle} name="vehicle">
-    //   <group ref={chassisBody} name="chassisBody">
-        <primitive object={result} rotation-y={Math.PI} position={[0, -0.09, 0]}/>
-     
-  
-    
+    <primitive object={result} rotation-y={Math.PI} position={[0, -0.09, 0]}/>
   );
 }

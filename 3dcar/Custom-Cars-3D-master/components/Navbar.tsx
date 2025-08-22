@@ -12,7 +12,12 @@ export default function () {
                 className='flex z-40 font-semibold'>
                 <span className='text-yellowImport'>HearthPaw</span>
               </Link>
- 
+              
+              <Link
+                href='/ar'
+                className='flex z-40 font-medium text-white hover:text-yellow-400 transition-colors'>
+                <span>AR Experience</span>
+              </Link>
         </div>
         <SignInButton/>
 

@@ -2,7 +2,9 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/lib/prisma": ["lib/prisma.ts"]
+      "@/lib/prisma": [
+        "lib/prisma.ts"
+      ]
     },
     "lib": [
       "dom",
@@ -30,8 +32,10 @@
     "next-env.d.ts",
     ".next/types/**/*.ts",
     "**/*.ts",
-    "**/*.tsx"
-, "app/page.jsx"  ],
+    "**/*.tsx",
+    "app/page.jsx",
+    "./.next/types/**/*.ts"
+  ],
   "exclude": [
     "node_modules"
   ]

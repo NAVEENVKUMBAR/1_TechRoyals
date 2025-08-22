@@ -7,75 +7,148 @@ Source: https://sketchfab.com/3d-models/ford-mustang-2015-edition-4b1a593df06042
 Title: Ford Mustang 2015 EDITION
 */
 
-import React, { useRef } from 'react'
+import React, { useRef, useEffect, useMemo } from 'react'
 import { useGLTF } from '@react-three/drei'
-import { TextureLoader } from 'three/src/loaders/TextureLoader'
+import { TextureLoader } from 'three'
 import { useLoader } from '@react-three/fiber';
 import * as THREE from 'three'; 
 
 function Model(props) {
   const { nodes, materials } = useGLTF('/mustang.gltf')
-  if(props.material != "null"){
-  const galaxyTexture = useLoader(TextureLoader, props.material);
+  
+  // Debug: Log available objects and materials
+  useEffect(() => {
+    console.log('Mustang - Available nodes:', Object.keys(nodes));
+    console.log('Mustang - Available materials:', Object.keys(materials));
+    console.log('Mustang - Custom colors:', props.customColors);
+    console.log('Mustang - Material prop:', props.material);
+  }, [nodes, materials, props.customColors, props.material]);
+  
+  // Handle material wrapping with proper error handling
+  const customMaterial = useMemo(() => {
+    if (props.material && props.material !== "null") {
+      try {
+        const texture = useLoader(TextureLoader, props.material);
+        return new THREE.MeshBasicMaterial({
+          map: texture,
+          transparent: false,
+          side: THREE.DoubleSide
+        });
+      } catch (error) {
+        console.error('Error loading texture:', error);
+        return null;
+      }
+    }
+    return null;
+  }, [props.material]);
 
-  // Create a new material for the car body with the galaxy texture
-  const galaxyMaterial = React.useMemo(() => {
-    return new THREE.MeshBasicMaterial({
-      map: galaxyTexture,
-    });
-  }, [galaxyTexture]);
+  // Apply custom material to body parts if available
+  useEffect(() => {
+    if (customMaterial && materials.CARPAINT) {
+      materials.CARPAINT = customMaterial;
+    }
+  }, [customMaterial, materials.CARPAINT]);
 
-  // Replace the existing 'materials.body' with the new 'galaxyMaterial'
-  materials.CARPAINT = galaxyMaterial;
-  }
+  // Ensure customColors has default values
+  const customColors = props.customColors || {};
+  const bodyColor = customColors.body || "#ff0000";
+  const accessoriesColor = customColors.accesoriesColor || "#000000";
+  const rimsColor = customColors.rimsColor || "#000000";
+
   return (
     <group {...props} dispose={null}>
+      {/* Body Parts - Apply custom material or color */}
       <group rotation={[Math.PI / 2, 0, -Math.PI]} scale={0.01}>
-        <mesh geometry={nodes.Object_4.geometry} material={materials.Black_Metal_Paint} />
-        <mesh geometry={nodes.Object_5.geometry} material={materials.Black_Metal_Paint} />
+        <mesh geometry={nodes.Object_33.geometry} material={materials.CARPAINT} material-color={customMaterial ? undefined : bodyColor}/>
+        <mesh geometry={nodes.Object_34.geometry} material={materials.CARPAINT} material-color={customMaterial ? undefined : bodyColor}/>
       </group>
+      
+      {/* Accessories - Grilles, Trim, Interior */}
       <group rotation={[Math.PI / 2, 0, -Math.PI]} scale={0.01}>
-        <mesh geometry={nodes.Object_33.geometry} material={materials.CARPAINT} material-color={props.customColors.body}/>
-        <mesh geometry={nodes.Object_34.geometry} material={materials.CARPAINT} material-color={props.customColors.body}/>
+        <mesh geometry={nodes.Object_4.geometry} material={materials.Black_Metal_Paint} material-color={accessoriesColor}/>
+        <mesh geometry={nodes.Object_5.geometry} material={materials.Black_Metal_Paint} material-color={accessoriesColor}/>
+        <mesh geometry={nodes.Object_46.geometry} material={materials.Black_Plastic} material-color={accessoriesColor}/>
+        <mesh geometry={nodes.Object_47.geometry} material={materials.Black_Plastic} material-color={accessoriesColor}/>
+        <mesh geometry={nodes.Object_48.geometry} material={materials.Black_Plastic} material-color={accessoriesColor}/>
+        <mesh geometry={nodes.Object_49.geometry} material={materials.Black_Plastic} material-color={accessoriesColor}/>
       </group>
+      
+      {/* Chrome and Metal Accessories */}
       <group rotation={[Math.PI / 2, 0, -Math.PI]} scale={0.01}>
-        <mesh geometry={nodes.Object_46.geometry} material={materials.Black_Plastic} />
-        <mesh geometry={nodes.Object_47.geometry} material={materials.Black_Plastic} />
-        <mesh geometry={nodes.Object_48.geometry} material={materials.Black_Plastic} />
-        <mesh geometry={nodes.Object_49.geometry} material={materials.Black_Plastic} />
+        <mesh geometry={nodes.Object_7.geometry} material={materials.Black_Plastic} material-color={accessoriesColor}/>
+        <mesh geometry={nodes.Object_9.geometry} material={materials.Black_Metal_Paint} material-color={accessoriesColor}/>
+        <mesh geometry={nodes.Object_13.geometry} material={materials.Chrome} material-color={accessoriesColor}/>
+        <mesh geometry={nodes.Object_15.geometry} material={materials.Chrome} material-color={accessoriesColor}/>
+        <mesh geometry={nodes.Object_19.geometry} material={materials.Chrome} material-color={accessoriesColor}/>
+        <mesh geometry={nodes.Object_23.geometry} material={materials.Mirror} material-color={accessoriesColor}/>
+        <mesh geometry={nodes.Object_25.geometry} material={materials.Brushed_Aluminum} material-color={accessoriesColor}/>
+        <mesh geometry={nodes.Object_29.geometry} material={materials.Black_Plastic} material-color={accessoriesColor}/>
+        <mesh geometry={nodes.Object_31.geometry} material={materials.Black_Plastic} material-color={accessoriesColor}/>
+        <mesh geometry={nodes.Object_38.geometry} material={materials.Chrome} material-color={accessoriesColor}/>
+        <mesh geometry={nodes.Object_40.geometry} material={materials.Black_Plastic} material-color={accessoriesColor}/>
+        <mesh geometry={nodes.Object_44.geometry} material={materials.BackThingy} material-color={accessoriesColor}/>
+        <mesh geometry={nodes.Object_51.geometry} material={materials.Chrome} material-color={accessoriesColor}/>
+        <mesh geometry={nodes.Object_60.geometry} material={materials.Chrome} material-color={accessoriesColor}/>
       </group>
+      
+      {/* Wheels and Rims - Customizable */}
       <group rotation={[Math.PI / 2, 0, -Math.PI]} scale={0.01}>
-        <mesh geometry={nodes.Object_55.geometry} material={materials.Light} />
-        <mesh geometry={nodes.Object_56.geometry} material={materials.Window_Glass} />
+        {/* Brake Calipers - Rims Color */}
+        <mesh geometry={nodes.Object_11.geometry} material={materials.Calipers} material-color={rimsColor}/>
+        
+        {/* Additional Wheel Objects - Search for more wheel-related meshes */}
+        {Object.keys(nodes).map((key) => {
+          if (key.toLowerCase().includes('wheel') || key.toLowerCase().includes('rim') || key.toLowerCase().includes('disk') || key.toLowerCase().includes('caliper')) {
+            return (
+              <mesh 
+                key={key}
+                geometry={nodes[key].geometry} 
+                material={materials.Black_Metal_Paint} 
+                rotation={[Math.PI / 2, 0, -Math.PI]} 
+                scale={0.01}
+                material-color={rimsColor}
+              />
+            );
+          }
+          return null;
+        })}
       </group>
+      
+      {/* Fixed Elements - Lights, Windows, Indicators */}
+      <group rotation={[Math.PI / 2, 0, -Math.PI]} scale={0.01}>
+        <mesh geometry={nodes.Object_17.geometry} material={materials.Indicator} />
+        <mesh geometry={nodes.Object_21.geometry} material={materials.GlassTransparent} />
+        <mesh geometry={nodes.Object_27.geometry} material={materials.Light} />
+        <mesh geometry={nodes.Object_36.geometry} material={materials.Window_Glass} />
+        <mesh geometry={nodes.Object_42.geometry} material={materials.Indicator} />
+        <mesh geometry={nodes.Object_53.geometry} material={materials.Front_Glass} />
+        <mesh geometry={nodes.Object_58.geometry} material={materials.RedGlass} />
+      </group>
+      
+      {/* Tires - Fixed Black */}
       <group rotation={[Math.PI / 2, 0, -Math.PI]} scale={0.01}>
         <mesh geometry={nodes.Object_62.geometry} material={materials.Rubber_Black} />
         <mesh geometry={nodes.Object_63.geometry} material={materials.Rubber_Black} />
         <mesh geometry={nodes.Object_64.geometry} material={materials.Rubber_Black} />
         <mesh geometry={nodes.Object_65.geometry} material={materials.Rubber_Black} />
       </group>
-      <mesh geometry={nodes.Object_7.geometry} material={materials.Black_Plastic} rotation={[Math.PI / 2, 0, -Math.PI]} scale={0.01} />
-      <mesh geometry={nodes.Object_9.geometry} material={materials.Black_Metal_Paint} rotation={[Math.PI / 2, 0, -Math.PI]} scale={0.01} />
-      <mesh geometry={nodes.Object_11.geometry} material={materials.Calipers} rotation={[Math.PI / 2, 0, -Math.PI]} scale={0.01} />
-      <mesh geometry={nodes.Object_13.geometry} material={materials.Chrome} rotation={[Math.PI / 2, 0, -Math.PI]} scale={0.01} />
-      <mesh geometry={nodes.Object_15.geometry} material={materials.Chrome} rotation={[Math.PI / 2, 0, -Math.PI]} scale={0.01} />
-      <mesh geometry={nodes.Object_17.geometry} material={materials.Indicator} rotation={[Math.PI / 2, 0, -Math.PI]} scale={0.01} />
-      <mesh geometry={nodes.Object_19.geometry} material={materials.Chrome} rotation={[Math.PI / 2, 0, -Math.PI]} scale={0.01} />
-      <mesh geometry={nodes.Object_21.geometry} material={materials.GlassTransparent} rotation={[Math.PI / 2, 0, -Math.PI]} scale={0.01} />
-      <mesh geometry={nodes.Object_23.geometry} material={materials.Mirror} rotation={[Math.PI / 2, 0, -Math.PI]} scale={0.01} />
-      <mesh geometry={nodes.Object_25.geometry} material={materials.Brushed_Aluminum} rotation={[Math.PI / 2, 0, -Math.PI]} scale={0.01} />
-      <mesh geometry={nodes.Object_27.geometry} material={materials.Light} rotation={[Math.PI / 2, 0, -Math.PI]} scale={0.01} />
-      <mesh geometry={nodes.Object_29.geometry} material={materials.Black_Plastic} rotation={[Math.PI / 2, 0, -Math.PI]} scale={0.01} />
-      <mesh geometry={nodes.Object_31.geometry} material={materials.Black_Plastic} rotation={[Math.PI / 2, 0, -Math.PI]} scale={0.01} />
-      <mesh geometry={nodes.Object_36.geometry} material={materials.Window_Glass} rotation={[Math.PI / 2, 0, -Math.PI]} scale={0.01} />
-      <mesh geometry={nodes.Object_38.geometry} material={materials.Chrome} rotation={[Math.PI / 2, 0, -Math.PI]} scale={0.01} />
-      <mesh geometry={nodes.Object_40.geometry} material={materials.Black_Plastic} rotation={[Math.PI / 2, 0, -Math.PI]} scale={0.01} />
-      <mesh geometry={nodes.Object_42.geometry} material={materials.Indicator} rotation={[Math.PI / 2, 0, -Math.PI]} scale={0.01} />
-      <mesh geometry={nodes.Object_44.geometry} material={materials.BackThingy} rotation={[Math.PI / 2, 0, -Math.PI]} scale={0.01} />
-      <mesh geometry={nodes.Object_51.geometry} material={materials.Chrome} rotation={[Math.PI / 2, 0, -Math.PI]} scale={0.01} />
-      <mesh geometry={nodes.Object_53.geometry} material={materials.Front_Glass} rotation={[Math.PI / 2, 0, -Math.PI]} scale={0.01} />
-      <mesh geometry={nodes.Object_58.geometry} material={materials.RedGlass} rotation={[Math.PI / 2, 0, -Math.PI]} scale={0.01} />
-      <mesh geometry={nodes.Object_60.geometry} material={materials.Chrome} rotation={[Math.PI / 2, 0, -Math.PI]} scale={0.01} />
+      
+      {/* Additional Accessories - Search for more accessory-related meshes */}
+      {Object.keys(nodes).map((key) => {
+        if (key.toLowerCase().includes('grille') || key.toLowerCase().includes('trim') || key.toLowerCase().includes('badge') || key.toLowerCase().includes('plate')) {
+          return (
+            <mesh 
+              key={key}
+              geometry={nodes[key].geometry} 
+              material={materials.Black_Metal_Paint} 
+              rotation={[Math.PI / 2, 0, -Math.PI]} 
+              scale={0.01}
+              material-color={accessoriesColor}
+            />
+          );
+        }
+        return null;
+      })}
     </group>
   )
 }
