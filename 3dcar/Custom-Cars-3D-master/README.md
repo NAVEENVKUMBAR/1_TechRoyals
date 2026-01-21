@@ -15,13 +15,7 @@
 - **11 Premium Car Models** - Mustang, BMW M8, Porsche, Audi A8, Mercedes-Benz, BMW E34, Camaro, McLaren 720S, Nissan, and more
 - **Real-time Color Customization** - Body, accessories, and rims
 - **Material Wraps** - 10+ texture options including galaxy patterns
-- **Interactive 3D Controls** - Orbit, zoom, and rotate
-
-### 📱 **Augmented Reality (AR)**
-- **WebXR AR Experience** - Native browser AR support
-- **Model Viewer AR** - Google's AR viewer for mobile devices
-- **Mobile Optimized** - Touch-friendly AR controls
-- **Cross-platform Support** - iOS Safari, Android Chrome, Edge
+- **Interactive 3D Controls** - Orbit, zoom, and rotate.
 
 ### 🎯 **Responsive Design**
 - **Mobile First** - Optimized for all screen sizes
